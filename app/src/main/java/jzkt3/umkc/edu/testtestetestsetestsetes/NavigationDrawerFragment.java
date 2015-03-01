@@ -2,6 +2,7 @@ package jzkt3.umkc.edu.testtestetestsetestsetes;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -21,7 +22,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class NavigationDrawerFragment extends Fragment {
+public class NavigationDrawerFragment extends Fragment implements MyAdapter.ClickListener {
 
     private RecyclerView recyclerView;
 
@@ -33,6 +34,10 @@ public class NavigationDrawerFragment extends Fragment {
     public static final String KEY_USER_LEARNED="user_learned_drawer";
     private View cView;
     private MyAdapter adapter;
+
+    Context context;
+
+
 
 
     public NavigationDrawerFragment() {
@@ -56,6 +61,7 @@ public class NavigationDrawerFragment extends Fragment {
         View layout = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
         recyclerView = (RecyclerView) layout.findViewById(R.id.drawerList);
         adapter = new MyAdapter(getActivity(),getData());
+        adapter.setClickListener(this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
@@ -64,8 +70,8 @@ public class NavigationDrawerFragment extends Fragment {
 
     public static List<Information> getData(){
         List<Information> data = new ArrayList<>();
-        int[] icons ={R.drawable.money_money,R.drawable.money_money,R.drawable.money_money};
-        String[] titles ={"One","Two","Three"};
+        int[] icons ={R.drawable.money_bag,R.drawable.money_exchange,R.drawable.check_book};
+        String[] titles ={"Global Exchange Rates","Convert","Conversion History"};
 
         for (int i=0;i<titles.length && i<icons.length;i++){
             Information current = new Information();
@@ -135,5 +141,18 @@ public class NavigationDrawerFragment extends Fragment {
     public static String readFromPreferences(Context context,String preferenceName,String defaultValue){
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_FILE_NAME,Context.MODE_PRIVATE);
         return sharedPreferences.getString(preferenceName,defaultValue);
+    }
+
+    @Override
+    public void itemClicked(View view, int position) {
+            if (position == 0){
+                startActivity(new Intent(getActivity(),AllRatesActivity.class));
+            }
+            if (position == 1){
+                startActivity(new Intent(getActivity(),ConvertActivity.class));
+            }
+            if (position == 2){
+                startActivity(new Intent(getActivity(),HistoryActivity.class));
+            }
     }
 }

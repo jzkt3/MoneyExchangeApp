@@ -8,12 +8,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 
-public class InfoActivity extends ActionBarActivity {
+public class HistoryActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_info);
+        setContentView(R.layout.activity_history);
 
         Toolbar toolbar= (Toolbar) findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);

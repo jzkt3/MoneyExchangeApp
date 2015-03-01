@@ -23,6 +23,18 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
+        <activity
+            android:name=".AllRatesActivity"
+            android:label="@string/title_activity_all_rates" >
+        </activity>
+        <activity
+            android:name=".ConvertActivity"
+            android:label="@string/title_activity_convert" >
+        </activity>
+        <activity
+            android:name=".HistoryActivity"
+            android:label="@string/title_activity_history" >
+        </activity>
     </application>
 
 </manifest>
