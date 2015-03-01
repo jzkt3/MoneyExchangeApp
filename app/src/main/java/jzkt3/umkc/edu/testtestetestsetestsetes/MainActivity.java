@@ -9,15 +9,25 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
 
 public class MainActivity extends ActionBarActivity {
 
     private Toolbar toolbar;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_appbar);
+        setTitle("Global Exchange Rates");
 
         toolbar = (Toolbar) findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
@@ -26,6 +36,27 @@ public class MainActivity extends ActionBarActivity {
         NavigationDrawerFragment drawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.nav_drawer);
         drawerFragment.setUp(R.id.nav_drawer,(DrawerLayout)findViewById(R.id.drawer_layout),toolbar);
+
+
+
+        // Volley Request Testing
+        RequestQueue requestQueue = VolleySingleton.getInstance().getRequestQueue();
+        StringRequest request = new StringRequest(Request.Method.GET,"http://php.net/",new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Toast.makeText(getApplicationContext(),"RESPONSE "+response,Toast.LENGTH_SHORT).show();
+            }
+
+        }, new Response.ErrorListener(){
+            @Override
+            public void onErrorResponse(VolleyError error){
+                Toast.makeText(getApplicationContext(),"ERROR"+error.getMessage(),Toast.LENGTH_SHORT).show();
+
+            }
+        });
+        requestQueue.add(request);
+        // Volley Request Testing
+
 
     }
 
