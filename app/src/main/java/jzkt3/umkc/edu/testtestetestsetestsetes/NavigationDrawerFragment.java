@@ -146,7 +146,7 @@ public class NavigationDrawerFragment extends Fragment implements MyAdapter.Clic
     @Override
     public void itemClicked(View view, int position) {
             if (position == 0){
-                startActivity(new Intent(getActivity(),AllRatesActivity.class));
+                startActivity(new Intent(getActivity(),MainActivity.class));
             }
             if (position == 1){
                 startActivity(new Intent(getActivity(),ConvertActivity.class));

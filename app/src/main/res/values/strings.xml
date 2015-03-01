@@ -2,6 +2,7 @@
 <resources>
 
     <string name="app_name">App Name</string>
+    <string name="title_activity_main">Global Exchange Rates</string>
     <string name="hello_world">Hello World!</string>
     <string name="hello_info">Info Activity</string>
     <string name="action_settings">Settings</string>
