@@ -36,6 +36,7 @@ public class MainActivity extends ActionBarActivity {
     private ArrayList<Rate> listRates = new ArrayList<>();
 
 
+
     private VolleySingleton volleySingleton;
     private RequestQueue requestQueue;
     public static final String URL_EXHANGE_RATES = "http://openexchangerates.org/api/latest.json";
@@ -109,25 +110,35 @@ public class MainActivity extends ActionBarActivity {
 
                 JSONObject objectRates = response.getJSONObject(KEY_RATES);
 
-                String temporaryAbbreviation = "AED";
-                String rateValue = objectRates.getString("AED");
 
-                double doubleValue = Double.parseDouble(rateValue);
 
-                //Toast.makeText(getApplicationContext(),rateSearch,Toast.LENGTH_SHORT).show();
 
-                Rate rate = new Rate();
-                rate.setName(temporaryAbbreviation);
-                rate.setExchangeRate(doubleValue);
+                Iterator<?> keys = objectRates.keys();
+                while (keys.hasNext()){
+                    String key = (String)keys.next();
+                    String value = objectRates.getString(key);
 
-                listRates.add(rate);
+                    Rate rate = new Rate();
+                    rate.setName(key);
+                    double doubleValue = Double.parseDouble(value);
+                    rate.setExchangeRate(doubleValue);
+                    listRates.add(rate);
 
+
+                    if (objectRates.get(key) instanceof JSONObject){
+
+                    }
+                }
 
                 StringBuilder builder = new StringBuilder();
                 for (Rate i : listRates){
                     builder.append("" + i + "");
                 }
                 Toast.makeText(getApplicationContext(),builder,Toast.LENGTH_LONG).show();
+
+
+
+
 
 
             }
