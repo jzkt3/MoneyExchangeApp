@@ -34,8 +34,9 @@ public class Rate {
 
     @Override
     public String toString(){
-        return  "Name: "+name+
-                ", Exchange Rate: "+exchangeRate;
+        return  "Name: "+name
+                +"\n"
+                +"Exchange Rate: "+exchangeRate;
     }
 
 }

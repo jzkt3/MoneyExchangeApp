@@ -1,37 +1,58 @@
 package jzkt3.umkc.edu.testtestetestsetestsetes;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Layout;
 import android.util.JsonWriter;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
+
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 
-import org.json.JSONArray;
+
 import org.json.JSONException;
 import org.json.JSONObject;
-
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import static jzkt3.umkc.edu.testtestetestsetestsetes.Keys.EndpointExchangeRates.*;
+import static jzkt3.umkc.edu.testtestetestsetestsetes.Keys.EndpointExchangeRates.KEY_BASE;
+import static jzkt3.umkc.edu.testtestetestsetestsetes.Keys.EndpointExchangeRates.KEY_DISCLAIMER;
+import static jzkt3.umkc.edu.testtestetestsetestsetes.Keys.EndpointExchangeRates.KEY_LICENSE;
+import static jzkt3.umkc.edu.testtestetestsetestsetes.Keys.EndpointExchangeRates.KEY_RATES;
+import static jzkt3.umkc.edu.testtestetestsetestsetes.Keys.EndpointExchangeRates.KEY_TIMESTAMP;
 
 
 public class MainActivity extends ActionBarActivity {
 
     private Toolbar toolbar;
+
 
     private ArrayList<Rate> listRates = new ArrayList<>();
 
@@ -40,6 +61,10 @@ public class MainActivity extends ActionBarActivity {
     private VolleySingleton volleySingleton;
     private RequestQueue requestQueue;
     public static final String URL_EXHANGE_RATES = "http://openexchangerates.org/api/latest.json";
+
+
+    private RecyclerView listRatesView;
+    //private AdapterGlobalRates adapterGlobalRates;
 
     public static String getRequestURL(){
         return URL_EXHANGE_RATES+"?app_id="+ MyApplication.API_KEY;
@@ -51,7 +76,7 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_appbar);
+        setContentView(R.layout.activity_main);
         setTitle("Global Exchange Rates");
 
         toolbar = (Toolbar) findViewById(R.id.app_bar);
@@ -62,17 +87,17 @@ public class MainActivity extends ActionBarActivity {
                 getSupportFragmentManager().findFragmentById(R.id.nav_drawer);
         drawerFragment.setUp(R.id.nav_drawer,(DrawerLayout)findViewById(R.id.drawer_layout),toolbar);
 
-
-
         volleySingleton = VolleySingleton.getInstance();
         requestQueue = volleySingleton.getRequestQueue();
-
 
         sendJsonRequest();
 
 
 
+
     }
+
+
 
     private void sendJsonRequest() {
 
@@ -80,14 +105,24 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onResponse(JSONObject response) {
 
-                parseJSONResponse(response);
+            listRates = parseJSONResponse(response);
+
+
+
+            ListView listview1 = (ListView) findViewById(R.id.datlist);
+                Log.d(getPackageName(), listview1 != null ? "THELIST is not null!" : "THELIST is null!");
+
+                ArrayAdapter<Rate> adapter = new ArrayAdapter<Rate>(getApplicationContext(),R.layout.rates_layout,listRates);
+
+                listview1.setAdapter(adapter);
+
 
             }
 
         }, new Response.ErrorListener(){
             @Override
             public void onErrorResponse(VolleyError error){
-                Toast.makeText(getApplicationContext(),"ERROR"+error.getMessage(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "ERROR" + error.getMessage(), Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -96,13 +131,12 @@ public class MainActivity extends ActionBarActivity {
     }
 
 
-    private void parseJSONResponse(JSONObject response){
+    private ArrayList<Rate> parseJSONResponse(JSONObject response){
 
-        if (response == null || response.length() == 0) {
-            return;
-        }
-        try {
-            if(response.has(KEY_DISCLAIMER)) {
+        ArrayList<Rate> ListRates = new ArrayList<>();
+
+        if (response != null && response.length() > 0) {
+            try {
                 String disclaimer = response.getString(KEY_DISCLAIMER);
                 String license = response.getString(KEY_LICENSE);
                 String timestamp = response.getString(KEY_TIMESTAMP);
@@ -111,43 +145,42 @@ public class MainActivity extends ActionBarActivity {
                 JSONObject objectRates = response.getJSONObject(KEY_RATES);
 
 
-
-
                 Iterator<?> keys = objectRates.keys();
-                while (keys.hasNext()){
-                    String key = (String)keys.next();
+                while (keys.hasNext()) {
+                    String key = (String) keys.next();
                     String value = objectRates.getString(key);
 
                     Rate rate = new Rate();
                     rate.setName(key);
                     double doubleValue = Double.parseDouble(value);
                     rate.setExchangeRate(doubleValue);
-                    listRates.add(rate);
+                    ListRates.add(rate);
 
-
-                    if (objectRates.get(key) instanceof JSONObject){
-
-                    }
                 }
 
-                StringBuilder builder = new StringBuilder();
-                for (Rate i : listRates){
-                    builder.append("" + i + "");
-                }
-                Toast.makeText(getApplicationContext(),builder,Toast.LENGTH_LONG).show();
 
 
 
 
-
-
+            } catch (JSONException e) {
             }
-        } catch (JSONException e){
-
 
         }
 
+//        StringBuilder builder = new StringBuilder();
+//        for (Rate i : ListRates) {
+//            builder.append("" + i + "");
+//        }
+//        Toast.makeText(getApplicationContext(), builder, Toast.LENGTH_LONG).show();
+
+        return ListRates;
+
     }
+
+
+
+
+
 
 
     @Override
@@ -178,4 +211,8 @@ public class MainActivity extends ActionBarActivity {
         }
            return super.onOptionsItemSelected(item);
     }
+
+
+
+
 }

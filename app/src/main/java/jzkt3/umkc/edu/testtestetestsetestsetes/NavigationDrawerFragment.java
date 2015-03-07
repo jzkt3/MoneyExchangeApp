@@ -155,4 +155,7 @@ public class NavigationDrawerFragment extends Fragment implements MyAdapter.Clic
                 startActivity(new Intent(getActivity(),HistoryActivity.class));
             }
     }
+
+    public interface NavigationDrawerCallbacks {
+    }
 }
