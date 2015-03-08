@@ -63,7 +63,7 @@ public class MainActivity extends ActionBarActivity {
     public static final String URL_EXHANGE_RATES = "http://openexchangerates.org/api/latest.json";
 
 
-    private RecyclerView listRatesView;
+    private ListView listRatesView;
     //private AdapterGlobalRates adapterGlobalRates;
 
     public static String getRequestURL(){
@@ -77,7 +77,7 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setTitle("Global Exchange Rates");
+        setTitle("All Exchange Rates");
 
         toolbar = (Toolbar) findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
@@ -109,12 +109,13 @@ public class MainActivity extends ActionBarActivity {
 
 
 
-            ListView listview1 = (ListView) findViewById(R.id.datlist);
-                Log.d(getPackageName(), listview1 != null ? "THELIST is not null!" : "THELIST is null!");
-
-                ArrayAdapter<Rate> adapter = new ArrayAdapter<Rate>(getApplicationContext(),R.layout.rates_layout,listRates);
-
-                listview1.setAdapter(adapter);
+            //ListView listview1 = (ListView) findViewById(R.id.datlist);
+            listRatesView = (ListView) findViewById(R.id.datlist);
+                Log.d(getPackageName(), listRatesView != null ? "THELIST is not null!" : "THELIST is null!");
+            //listRatesView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+            //ArrayAdapter<Rate> adapter = new ArrayAdapter<Rate>(getApplicationContext(),R.layout.rates_layout,listRates);
+            Adapter2 adapter = new Adapter2(getApplicationContext(),R.layout.rates_layout,listRates);
+            listRatesView.setAdapter(adapter);
 
 
             }
