@@ -40,7 +40,9 @@ import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 
 import static jzkt3.umkc.edu.testtestetestsetestsetes.Keys.EndpointExchangeRates.KEY_BASE;
 import static jzkt3.umkc.edu.testtestetestsetestsetes.Keys.EndpointExchangeRates.KEY_DISCLAIMER;
@@ -54,21 +56,30 @@ public class MainActivity extends ActionBarActivity {
     private Toolbar toolbar;
 
 
-    private ArrayList<Rate> listRates = new ArrayList<>();
+    public static ArrayList<Rate> listRates = new ArrayList<>();
+    public static ArrayList<String> listFullNames = new ArrayList<>();
 
 
 
-    private VolleySingleton volleySingleton;
-    private RequestQueue requestQueue;
+    private static VolleySingleton volleySingleton;
+    private static RequestQueue requestQueue;
     public static final String URL_EXHANGE_RATES = "http://openexchangerates.org/api/latest.json";
+    public static final String URL_FULLNAME = "http://openexchangerates.org/api/currencies.json";
 
+    public static String savedText;
+    public static String savedText2;
 
-    private ListView listRatesView;
+    private static ListView listRatesView;
     //private AdapterGlobalRates adapterGlobalRates;
 
     public static String getRequestURL(){
         return URL_EXHANGE_RATES+"?app_id="+ MyApplication.API_KEY;
     }
+    public static String getRequestURL2(){
+        return URL_FULLNAME;
+    }
+
+
 
 
 
@@ -93,9 +104,9 @@ public class MainActivity extends ActionBarActivity {
         sendJsonRequest();
 
 
-
-
     }
+
+
 
 
 
@@ -105,18 +116,9 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onResponse(JSONObject response) {
 
-            listRates = parseJSONResponse(response);
+             listRates = parseJSONResponse(response);
 
-
-
-            //ListView listview1 = (ListView) findViewById(R.id.datlist);
-            listRatesView = (ListView) findViewById(R.id.datlist);
-                Log.d(getPackageName(), listRatesView != null ? "THELIST is not null!" : "THELIST is null!");
-            //listRatesView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-            //ArrayAdapter<Rate> adapter = new ArrayAdapter<Rate>(getApplicationContext(),R.layout.rates_layout,listRates);
-            Adapter2 adapter = new Adapter2(getApplicationContext(),R.layout.rates_layout,listRates);
-            listRatesView.setAdapter(adapter);
-
+                sendJsonRequest2();
 
             }
 
@@ -131,6 +133,36 @@ public class MainActivity extends ActionBarActivity {
 
     }
 
+    private void sendJsonRequest2() {
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,getRequestURL2(),null,new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+
+                listFullNames = parseJSONResponse2(response);
+
+                for (int i = 0; i < listFullNames.size();i++){
+                    listRates.get(i).setFullName(listFullNames.get(i));
+                }
+
+
+                listRatesView = (ListView) findViewById(R.id.datlist);
+                Log.d(getPackageName(), listRatesView != null ? "THELIST is not null!" : "THELIST is null!");
+                Adapter2 adapter = new Adapter2(getApplicationContext(),R.layout.rates_layout,listRates);
+                listRatesView.setAdapter(adapter);
+
+            }
+
+        }, new Response.ErrorListener(){
+            @Override
+            public void onErrorResponse(VolleyError error){
+                Toast.makeText(getApplicationContext(), "ERROR" + error.getMessage(), Toast.LENGTH_SHORT).show();
+
+            }
+        });
+        requestQueue.add(request);
+    }
+
 
     private ArrayList<Rate> parseJSONResponse(JSONObject response){
 
@@ -138,9 +170,24 @@ public class MainActivity extends ActionBarActivity {
 
         if (response != null && response.length() > 0) {
             try {
+
                 String disclaimer = response.getString(KEY_DISCLAIMER);
+                savedText = disclaimer;
+
                 String license = response.getString(KEY_LICENSE);
+                savedText2 = license;
+
+
+                //Parse timestamp
                 String timestamp = response.getString(KEY_TIMESTAMP);
+                int timeValue = Integer.parseInt(timestamp);
+                Date date = new Date ();
+                date.setTime((long)timeValue*1000);
+                TextView timestampView = (TextView) findViewById(R.id.timestampText);
+                timestampView.setText(date.toString());
+
+
+
                 String base = response.getString(KEY_BASE);
 
                 JSONObject objectRates = response.getJSONObject(KEY_RATES);
@@ -159,26 +206,46 @@ public class MainActivity extends ActionBarActivity {
 
                 }
 
+            } catch (JSONException e) {
+            }
+
+        }
+        return ListRates;
+    }
+
+
+    private ArrayList<String> parseJSONResponse2(JSONObject response){
+
+        ArrayList<String> ListFullNames = new ArrayList<>();
+
+        if (response != null && response.length() > 0) {
+            try {
+
+
+                Iterator<?> keys = response.keys();
+                while (keys.hasNext()) {
+                    String key = (String) keys.next();
+                    String value = response.getString(key);
 
 
 
+                    ListFullNames.add(value);
+
+                }
+
+
+
+                //for(int i = 0; i < ListFullNames.size(); i++) {
+                 //   Toast.makeText(this, ListFullNames.get(i), Toast.LENGTH_SHORT)
+                  //          .show();
+                //}
 
             } catch (JSONException e) {
             }
 
         }
-
-//        StringBuilder builder = new StringBuilder();
-//        for (Rate i : ListRates) {
-//            builder.append("" + i + "");
-//        }
-//        Toast.makeText(getApplicationContext(), builder, Toast.LENGTH_LONG).show();
-
-        return ListRates;
-
+        return ListFullNames;
     }
-
-
 
 
 

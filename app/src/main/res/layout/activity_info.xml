@@ -10,8 +10,19 @@
 
     <TextView
         android:layout_below="@+id/app_bar"
+        android:id="@+id/disclaimerText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_info" />
+        android:text="@string/hello_info"
+        android:textColor="@color/primaryText"/>
+
+    <TextView
+        android:id="@+id/licenseText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/disclaimerText"
+        android:text="license"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/primaryText"/>
 
 </RelativeLayout>

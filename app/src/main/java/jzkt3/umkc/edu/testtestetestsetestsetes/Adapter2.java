@@ -39,12 +39,16 @@ public class Adapter2 extends ArrayAdapter<Rate> {
         if (p != null){
             TextView t1 = (TextView) v.findViewById(R.id.nameName);
             TextView t2 = (TextView) v.findViewById(R.id.rateRate);
+            TextView t3 = (TextView) v.findViewById(R.id.fnFN);
 
             if (t1 !=null){
                 t1.setText(p.getName());
             }
             if (t2 !=null){
                 t2.setText(Double.toString(p.getExchangeRate()));
+            }
+            if (t3 !=null){
+                t3.setText(p.getFullName());
             }
         }
         return v;

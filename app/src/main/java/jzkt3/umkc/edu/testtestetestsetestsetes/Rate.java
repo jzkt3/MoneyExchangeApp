@@ -6,15 +6,17 @@ package jzkt3.umkc.edu.testtestetestsetestsetes;
 public class Rate {
     private String name;
     private double exchangeRate;
+    private String fullName;
 
     public Rate(){
 
     }
 
-    public Rate(String name,double exchangeRate){
+    public Rate(String name,double exchangeRate,String fullName){
 
         this.name = name;
         this.exchangeRate = exchangeRate;
+        this.fullName = fullName;
     }
 
 
@@ -32,11 +34,16 @@ public class Rate {
         return exchangeRate;
     }
 
+    public void setFullName(String fullName){
+        this.fullName = fullName;
+    }
+    public String getFullName(){
+        return fullName;
+    }
+
     @Override
     public String toString(){
-        return  "Name: "+name
-                +"\n"
-                +"Exchange Rate: "+exchangeRate;
+        return  fullName;
     }
 
 }

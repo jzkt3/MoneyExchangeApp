@@ -6,11 +6,13 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 
 public class InfoActivity extends ActionBarActivity {
 
-
+    private TextView disclaimerText;
+    private TextView licenseText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +24,12 @@ public class InfoActivity extends ActionBarActivity {
 
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        disclaimerText = (TextView) findViewById(R.id.disclaimerText);
+        disclaimerText.setText(MainActivity.savedText);
+
+        licenseText = (TextView) findViewById(R.id.licenseText);
+        licenseText.setText(MainActivity.savedText2);
     }
 
 
