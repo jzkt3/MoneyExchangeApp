@@ -16,6 +16,7 @@
     <string name="title_activity_history">Conversion History</string>
     <string name="last_updated">Last updated: </string>
     <string name="convert_button_text">Convert</string>
+    <string name="currency_prompt">Choose a currency</string>
 
     <string-array name="tabs">
         <item>TAB 1</item>

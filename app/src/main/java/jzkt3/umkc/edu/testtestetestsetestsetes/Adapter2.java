@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -35,23 +36,30 @@ public class Adapter2 extends ArrayAdapter<Rate> {
         }
 
 
+
+
         Rate p = getItem(position);
+
+
+
         if (p != null){
             TextView t1 = (TextView) v.findViewById(R.id.nameName);
             TextView t2 = (TextView) v.findViewById(R.id.rateRate);
             TextView t3 = (TextView) v.findViewById(R.id.fnFN);
 
+
             if (t1 !=null){
-                t1.setText(p.getName());
+                t1.setText(p.getFullName());
             }
             if (t2 !=null){
                 t2.setText(Double.toString(p.getExchangeRate()));
             }
             if (t3 !=null){
-                t3.setText(p.getFullName());
+                t3.setText(p.getName());
             }
         }
         return v;
     }
+
 
 }

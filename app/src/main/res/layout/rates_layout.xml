@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:textColor="@color/primaryText"
-        android:text="ABC"
+        android:text="Full name"
         android:layout_marginLeft="60dp"
 
     />
@@ -30,10 +30,10 @@
 
     <ImageView
         android:id="@+id/picPic"
-        android:src="@drawable/blue_wallet"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginRight="300dp"
+        android:src="@drawable/domain_1"
         android:layout_alignBottom="@+id/rateRate"
         android:layout_alignTop="@+id/nameName"
         android:layout_marginTop="2dp"
@@ -43,12 +43,11 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Text"
+        android:text="ABC"
         android:id="@+id/fnFN"
         android:textColor="@color/primaryText"
-        android:layout_toRightOf="@+id/nameName"
-        android:paddingLeft="30dp"
-        android:layout_above="@+id/rateRate"
-        android:layout_toEndOf="@+id/rateRate" />
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="28dp" />
 
 </RelativeLayout>

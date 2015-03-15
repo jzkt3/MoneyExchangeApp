@@ -4,17 +4,21 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.List;
 
 
@@ -47,16 +51,24 @@ public class ConvertActivity extends ActionBarActivity {
 
         final Spinner spinner =(Spinner) findViewById(R.id.ratesSpinner);
         ArrayAdapter adapter = new ArrayAdapter(ConvertActivity.this,android.R.layout.simple_spinner_item,rates);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
 
 
         mEdit   = (EditText)findViewById(R.id.editDollars);
+        mEdit.setGravity(Gravity.CENTER_HORIZONTAL);
 
-        Button convertButton = (Button) findViewById(R.id.convertButton);
+        ImageButton convertButton = (ImageButton) findViewById(R.id.convertButton);
         convertButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                InputMethodManager inputManager = (InputMethodManager)
+                        getSystemService(ConvertActivity.this.INPUT_METHOD_SERVICE);
+
+                inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+                        InputMethodManager.HIDE_NOT_ALWAYS);
 
                 dollars = mEdit.getText().toString();
                 if(!dollars.isEmpty()) {
@@ -77,9 +89,11 @@ public class ConvertActivity extends ActionBarActivity {
                     finalResult = truncatedDouble;
 
 
-                    displayedResult = Double.toString(truncatedDouble);
+
+                    DecimalFormat formatter = new DecimalFormat("#,###.00");
+                    displayedResult = formatter.format(truncatedDouble);
                     converted = (TextView) findViewById(R.id.convertedText);
-                    converted.setText("$"+displayedResult);
+                    converted.setText(displayedResult +" "+ getSpinnerItemName);
 
 
                     // Items I need to store in database

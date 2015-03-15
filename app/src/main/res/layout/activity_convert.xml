@@ -2,47 +2,70 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background_2"
     tools:context="jzkt3.umkc.edu.testtestetestsetestsetes.ConvertActivity">
 
     <include
         android:id="@+id/app_bar"
         layout="@layout/app_bar" />
 
-    <EditText
-        android:id="@+id/editDollars"
-        android:layout_width="fill_parent"
-        android:layout_height="50dp"
-        android:layout_below="@id/app_bar"
-        android:clickable="true"
-        android:hint="U.S Dollars"
-        android:inputType="numberDecimal"
-        android:maxLength="20" />
-
-    <Button
-        android:id="@+id/convertButton"
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/convert_button_text"
-        android:layout_below="@+id/editDollars"
+        android:id="@+id/dollarSign"
+        android:src="@drawable/dollar_sign"
+        android:paddingTop="71dp"
+        android:paddingLeft="60dp"/>
+
+    <EditText
+        android:id="@+id/editDollars"
+        android:layout_width="160dp"
+        android:layout_height="35dp"
+        android:clickable="true"
+        android:hint=" Enter USD Amount"
+        android:inputType="numberDecimal"
+        android:maxLength="20"
+        android:background="@drawable/edit_text_border"
+        android:layout_marginLeft="20dp"
+        android:layout_below="@+id/app_bar"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="53dp" />
+        android:layout_marginTop="24dp" />
+
+
+
+
+    <ImageButton
+        android:id="@+id/convertButton"
+        android:layout_width="115dp"
+        android:layout_height="65dp"
+        android:text="@string/convert_button_text"
+        android:background="@drawable/button_border"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/ratesSpinner"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/data_exchange"
+        android:elevation="8dp"
+        />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="222.22"
         android:id="@+id/convertedText"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_marginTop="18dp"
+        android:layout_below="@+id/convertButton"
+        android:layout_centerHorizontal="true"/>
+
+
 
     <Spinner
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="300dp"
+        android:layout_height="55dp"
         android:id="@+id/ratesSpinner"
+        style="@style/spinner_style"
         android:layout_below="@+id/editDollars"
         android:layout_centerHorizontal="true"
-        />
+        android:layout_marginTop="10dp"/>
 
 
 </RelativeLayout>

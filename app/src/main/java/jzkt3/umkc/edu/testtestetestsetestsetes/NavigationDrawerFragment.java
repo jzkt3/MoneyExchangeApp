@@ -70,8 +70,8 @@ public class NavigationDrawerFragment extends Fragment implements MyAdapter.Clic
 
     public static List<Information> getData(){
         List<Information> data = new ArrayList<>();
-        int[] icons ={R.drawable.money_bag,R.drawable.money_exchange,R.drawable.check_book};
-        String[] titles ={"Global Exchange Rates","Convert","Conversion History"};
+        int[] icons ={R.drawable.globe_1,R.drawable.money_exchange,R.drawable.check_book};
+        String[] titles ={"All Exchange Rates","Convert","Conversion History"};
 
         for (int i=0;i<titles.length && i<icons.length;i++){
             Information current = new Information();

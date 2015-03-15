@@ -9,12 +9,12 @@
     
     <ImageView
         android:id="@+id/listIcon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="14dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="7dp"
+        android:layout_width="26dp"
+        android:layout_height="26dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="3dp"
         android:layout_centerVertical = "true"
         android:src="@drawable/money_money" />
     
@@ -24,6 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical = "true"
         android:layout_gravity="center_vertical"
-        android:text="Test text"/>
+        android:text="Test text"
+        android:textColor="@color/primaryText"/>
 
 </LinearLayout>

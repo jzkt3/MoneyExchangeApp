@@ -26,7 +26,7 @@
         android:id="@+id/drawerList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/drawerImage" />
+        android:layout_below="@id/drawerImage"/>
 
 
 </RelativeLayout>
