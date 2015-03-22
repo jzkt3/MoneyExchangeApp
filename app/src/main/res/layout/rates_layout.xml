@@ -23,7 +23,7 @@
         android:id="@+id/rateRate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/primaryText"
+        android:textColor="#FF0000"
         android:layout_below="@id/nameName"
         android:text="12.15523"
         android:layout_marginLeft="60dp"/>

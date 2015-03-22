@@ -2,70 +2,107 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_2"
     tools:context="jzkt3.umkc.edu.testtestetestsetestsetes.ConvertActivity">
 
     <include
         android:id="@+id/app_bar"
         layout="@layout/app_bar" />
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/dollarSign"
-        android:src="@drawable/dollar_sign"
-        android:paddingTop="71dp"
-        android:paddingLeft="60dp"/>
-
     <EditText
         android:id="@+id/editDollars"
-        android:layout_width="160dp"
+        android:layout_width="140dp"
         android:layout_height="35dp"
         android:clickable="true"
-        android:hint=" Enter USD Amount"
+        android:hint=" Enter USD"
         android:inputType="numberDecimal"
         android:maxLength="20"
         android:background="@drawable/edit_text_border"
-        android:layout_marginLeft="20dp"
+        android:layout_alignLeft="@+id/ratesSpinner"
         android:layout_below="@+id/app_bar"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="24dp" />
+        android:layout_marginTop="50dp"
+        android:gravity="center"
+        android:textColorHint="@color/primaryColorLight"/>
+
+    <TextView
+        android:layout_width="140dp"
+        android:layout_height="35dp"
+        android:id="@+id/convertedText"
+        android:layout_marginTop="50dp"
+        android:layout_below="@+id/app_bar"
+        android:background="@drawable/edit_text_border"
+        android:layout_alignRight="@+id/ratesSpinner"
+        android:gravity="center"
+        android:hint="Press Convert button"
+        android:textColorHint="@color/primaryColorLight"
+        android:textColor="@color/primaryText"/>
+
+    <TextView
+        android:id="@+id/dollars"
+        android:layout_width="140dp"
+        android:layout_height="20dp"
+        android:layout_below="@id/app_bar"
+        android:layout_alignLeft="@id/editDollars"
+        android:gravity="center"
+        android:textColor="@color/primaryColorDark"
+        android:text="U.S Dollars"
+        android:layout_marginTop="26dp"/>
+
+    <TextView
+        android:id="@+id/result"
+        android:layout_width="140dp"
+        android:layout_height="20dp"
+        android:layout_below="@id/app_bar"
+        android:layout_alignRight="@id/convertedText"
+        android:gravity="center"
+        android:textColor="@color/primaryColorDark"
+        android:text="Result"
+        android:layout_marginTop="26dp"/>
 
 
 
 
-    <ImageButton
+    <Button
         android:id="@+id/convertButton"
         android:layout_width="115dp"
         android:layout_height="65dp"
         android:text="@string/convert_button_text"
-        android:background="@drawable/button_border"
-        android:layout_marginTop="10dp"
+        android:background="@drawable/oval_button"
+        android:elevation="12dp"
         android:layout_below="@+id/ratesSpinner"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/data_exchange"
-        android:elevation="8dp"
-        />
+        android:layout_alignEnd="@+id/ratesSpinner"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/textIconsColor"/>
 
-    <TextView
+    <Button
+        android:id="@+id/resetButton"
+        android:layout_width="115dp"
+        android:layout_height="65dp"
+        android:layout_below="@+id/ratesSpinner"
+        android:layout_alignStart="@+id/ratesSpinner"
+        android:elevation="12dp"
+        android:background="@drawable/oval_button"
+        android:text="@string/reset_button_text"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/textIconsColor"/>
+
+    <ImageView
+        android:id="@+id/rightArrow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:id="@+id/convertedText"
-        android:layout_marginTop="18dp"
-        android:layout_below="@+id/convertButton"
-        android:layout_centerHorizontal="true"/>
+        android:src="@drawable/right_arrow"
+        android:layout_marginTop="112dp"
+        android:layout_centerHorizontal="true" />
 
 
 
     <Spinner
-        android:layout_width="300dp"
+        android:layout_width="325dp"
         android:layout_height="55dp"
         android:id="@+id/ratesSpinner"
         style="@style/spinner_style"
         android:layout_below="@+id/editDollars"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginTop="15dp"/>
 
 
 </RelativeLayout>

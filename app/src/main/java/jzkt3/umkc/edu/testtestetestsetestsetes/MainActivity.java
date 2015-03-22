@@ -112,7 +112,8 @@ public class MainActivity extends ActionBarActivity {
 
     private void sendJsonRequest() {
 
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,getRequestURL(),null,new Response.Listener<JSONObject>() {
+        JSONObject placeholder = new JSONObject();
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,getRequestURL(),placeholder,new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
 
@@ -135,7 +136,8 @@ public class MainActivity extends ActionBarActivity {
 
     private void sendJsonRequest2() {
 
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,getRequestURL2(),null,new Response.Listener<JSONObject>() {
+        JSONObject placeholder = new JSONObject();
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,getRequestURL2(),placeholder,new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
 

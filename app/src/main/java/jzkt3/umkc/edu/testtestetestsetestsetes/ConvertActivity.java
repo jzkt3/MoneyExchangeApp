@@ -57,9 +57,21 @@ public class ConvertActivity extends ActionBarActivity {
 
 
         mEdit   = (EditText)findViewById(R.id.editDollars);
-        mEdit.setGravity(Gravity.CENTER_HORIZONTAL);
+        mEdit.setGravity(Gravity.CENTER);
+        converted = (TextView) findViewById(R.id.convertedText);
 
-        ImageButton convertButton = (ImageButton) findViewById(R.id.convertButton);
+        Button resetButton = (Button) findViewById(R.id.resetButton);
+        resetButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mEdit.setText("");
+                converted.setText("");
+
+            }
+        });
+
+
+        Button convertButton = (Button) findViewById(R.id.convertButton);
         convertButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -92,7 +104,7 @@ public class ConvertActivity extends ActionBarActivity {
 
                     DecimalFormat formatter = new DecimalFormat("#,###.00");
                     displayedResult = formatter.format(truncatedDouble);
-                    converted = (TextView) findViewById(R.id.convertedText);
+                    converted.setGravity(Gravity.CENTER);
                     converted.setText(displayedResult +" "+ getSpinnerItemName);
 
 
