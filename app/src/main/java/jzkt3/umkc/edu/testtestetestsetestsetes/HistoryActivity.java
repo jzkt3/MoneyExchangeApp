@@ -1,15 +1,20 @@
 package jzkt3.umkc.edu.testtestetestsetestsetes;
 
-import android.support.v4.app.NavUtils;
-import android.support.v4.widget.DrawerLayout;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
 
 public class HistoryActivity extends ActionBarActivity {
+
+    DBAdapter helper;
+    String d = "123";
+    String t = "456";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +26,22 @@ public class HistoryActivity extends ActionBarActivity {
 
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        helper = new DBAdapter(this);
+
+        //addEntry();
+
+    }
+
+    public void addEntry(){
+
+        long id = helper.insertData(d,t);
+        if(id < 0){
+            Toast.makeText(this,"NO GOOD",Toast.LENGTH_LONG).show();
+        }
+        else{
+            Toast.makeText(this,"ALL GOOD",Toast.LENGTH_LONG).show();
+        }
 
     }
 

@@ -18,7 +18,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.math.BigDecimal;
+import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 
@@ -107,12 +110,21 @@ public class ConvertActivity extends ActionBarActivity {
                     converted.setGravity(Gravity.CENTER);
                     converted.setText(displayedResult +" "+ getSpinnerItemName);
 
+                    // Get current date and time
+                    DateFormat df = new SimpleDateFormat("d MMM yyyy");
+                    String date = df.format(Calendar.getInstance().getTime());
+
+                    DateFormat tf = new SimpleDateFormat("HH:mm");
+                    String time = tf.format(Calendar.getInstance().getTime());
+
 
                     // Items I need to store in database
                     // USdollars (dollar amount entered by user) - double
                     // getSpinnerItemName (Name of currency) - string
                     // getSpinnerItemRate (rate of currency) - double
                     // finalResult (converted result) - double
+                    // date - string
+                    // time - string
                 }
                 else {
                     Toast.makeText(ConvertActivity.this,"Please Enter Dollar Amount",Toast.LENGTH_SHORT).show();
