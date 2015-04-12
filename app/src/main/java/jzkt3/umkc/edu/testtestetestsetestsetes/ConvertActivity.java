@@ -17,6 +17,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import junit.framework.Assert;
+
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
@@ -36,6 +38,7 @@ public class ConvertActivity extends ActionBarActivity {
     private static String dollars;
     private static double getSpinnerItemRate;
     private static String getSpinnerItemName;
+    DBAdapter helper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,28 +53,20 @@ public class ConvertActivity extends ActionBarActivity {
 
         List<Rate> rates = (MainActivity.listRates);
 
-
-
-        final Spinner spinner =(Spinner) findViewById(R.id.ratesSpinner);
-        ArrayAdapter adapter = new ArrayAdapter(ConvertActivity.this,android.R.layout.simple_spinner_item,rates);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-
-
+        try {
+            setSpinner(rates);
+        }
+        catch(Exception e){
+            System.out.println(("Could not load, ") + e.getMessage());
+        }
 
         mEdit   = (EditText)findViewById(R.id.editDollars);
         mEdit.setGravity(Gravity.CENTER);
         converted = (TextView) findViewById(R.id.convertedText);
 
-        Button resetButton = (Button) findViewById(R.id.resetButton);
-        resetButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mEdit.setText("");
-                converted.setText("");
+        reset();
 
-            }
-        });
+        helper = new DBAdapter(this);
 
 
         Button convertButton = (Button) findViewById(R.id.convertButton);
@@ -79,17 +74,13 @@ public class ConvertActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
 
-                InputMethodManager inputManager = (InputMethodManager)
-                        getSystemService(ConvertActivity.this.INPUT_METHOD_SERVICE);
-
-                inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
-                        InputMethodManager.HIDE_NOT_ALWAYS);
+                hideKeyboard();
 
                 dollars = mEdit.getText().toString();
                 if(!dollars.isEmpty()) {
 
+                    Assert.assertNotNull("Dollar field is null",dollars);
                     USdollars = Double.parseDouble(dollars);
-
 
                     Rate rate = (Rate) ((Spinner) findViewById(R.id.ratesSpinner)).getSelectedItem();
                     getSpinnerItemName = rate.getName();
@@ -103,8 +94,6 @@ public class ConvertActivity extends ActionBarActivity {
                     Double truncatedDouble = new BigDecimal(toBeTruncated).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
                     finalResult = truncatedDouble;
 
-
-
                     DecimalFormat formatter = new DecimalFormat("#,###.00");
                     displayedResult = formatter.format(truncatedDouble);
                     converted.setGravity(Gravity.CENTER);
@@ -113,26 +102,94 @@ public class ConvertActivity extends ActionBarActivity {
                     // Get current date and time
                     DateFormat df = new SimpleDateFormat("d MMM yyyy");
                     String date = df.format(Calendar.getInstance().getTime());
-
                     DateFormat tf = new SimpleDateFormat("HH:mm");
                     String time = tf.format(Calendar.getInstance().getTime());
 
+                    // Convert doubles to strings
+                    try {
+                        String r = doubleToString(getSpinnerItemRate);
+                        String d = doubleToString(USdollars);
+                        String f = doubleToString(finalResult);
 
-                    // Items I need to store in database
-                    // USdollars (dollar amount entered by user) - double
-                    // getSpinnerItemName (Name of currency) - string
-                    // getSpinnerItemRate (rate of currency) - double
-                    // finalResult (converted result) - double
-                    // date - string
-                    // time - string
+                        addEntry(date,time,getSpinnerItemName,r,d,f);
+                    }
+                    catch(Exception z){
+                        System.out.println("Could not convert to string, Reason:"+z.getMessage());
+                    }
+
                 }
                 else {
                     Toast.makeText(ConvertActivity.this,"Please Enter Dollar Amount",Toast.LENGTH_SHORT).show();
                 }
-
-
             }
         });
+    }
+
+
+    public void setSpinner(List<Rate> rates) throws Exception{
+
+        // Sets and populates the spinner with rates.
+        // If the list is empty, it throws an exception.
+        // Throws:
+        // Exception - if list is empty
+        final Spinner spinner =(Spinner) findViewById(R.id.ratesSpinner);
+        ArrayAdapter adapter = new ArrayAdapter(ConvertActivity.this,android.R.layout.simple_spinner_item,rates);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        if(rates == null){
+            Exception e = new Exception("No rates found");
+            throw e;
+        }
+
+        spinner.setAdapter(adapter);
+
+    }
+
+    public void reset(){
+
+        Button resetButton = (Button) findViewById(R.id.resetButton);
+        resetButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mEdit.setText("");
+                converted.setText("");
+            }
+        });
+    }
+
+    public void hideKeyboard(){
+
+        InputMethodManager inputManager = (InputMethodManager)
+                getSystemService(ConvertActivity.this.INPUT_METHOD_SERVICE);
+
+        inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+                InputMethodManager.HIDE_NOT_ALWAYS);
+    }
+
+    public String doubleToString(double d) throws Exception {
+
+        // Converts a double to string
+        // Checks if the double is too large to fit into layout
+        // Throws:
+        // Exception - if double is larger than 1 billion
+        if(d > 1000000000){
+            Exception z = new Exception("Number is too big");
+            throw z;
+        }
+
+        return Double.toString(d);
+
+    }
+
+    public void addEntry(String date,String time,String name,String rate,String dlrs,String result){
+
+        long id = helper.insertData(date,time,name,rate,dlrs,result);
+        if(id < 0){
+            Toast.makeText(this,"ERROR-UNABLE TO SAVE",Toast.LENGTH_SHORT).show();
+        }
+        else{
+            Toast.makeText(this,"Saved to conversion history",Toast.LENGTH_SHORT).show();
+        }
     }
 
 

@@ -22,7 +22,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class NavigationDrawerFragment extends Fragment implements MyAdapter.ClickListener {
+public class NavigationDrawerFragment extends Fragment implements DrawerAdapter.ClickListener {
 
     private RecyclerView recyclerView;
 
@@ -33,12 +33,9 @@ public class NavigationDrawerFragment extends Fragment implements MyAdapter.Clic
     public static final String PREF_FILE_NAME="testpref";
     public static final String KEY_USER_LEARNED="user_learned_drawer";
     private View cView;
-    private MyAdapter adapter;
+    private DrawerAdapter adapter;
 
     Context context;
-
-
-
 
     public NavigationDrawerFragment() {
         // Required empty public constructor
@@ -60,7 +57,7 @@ public class NavigationDrawerFragment extends Fragment implements MyAdapter.Clic
         // Inflate the layout for this fragment
         View layout = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
         recyclerView = (RecyclerView) layout.findViewById(R.id.drawerList);
-        adapter = new MyAdapter(getActivity(),getData());
+        adapter = new DrawerAdapter(getActivity(),getData());
         adapter.setClickListener(this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

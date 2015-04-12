@@ -19,7 +19,6 @@ public class Rate {
         this.fullName = fullName;
     }
 
-
     public void setName(String name){
         this.name = name;
     }

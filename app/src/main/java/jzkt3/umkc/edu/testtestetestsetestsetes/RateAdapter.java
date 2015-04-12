@@ -16,12 +16,12 @@ import java.util.List;
 /**
  * Created by jzz on 3/8/2015.
  */
-public class Adapter2 extends ArrayAdapter<Rate> {
-    public Adapter2(Context context, int resource) {
+public class RateAdapter extends ArrayAdapter<Rate> {
+    public RateAdapter(Context context, int resource) {
         super(context, resource);
     }
 
-    public Adapter2(Context context, int resource, List<Rate> items){
+    public RateAdapter(Context context, int resource, List<Rate> items){
         super(context,resource,items);
     }
 
@@ -35,12 +35,7 @@ public class Adapter2 extends ArrayAdapter<Rate> {
             v = vi.inflate(R.layout.rates_layout,null);
         }
 
-
-
-
         Rate p = getItem(position);
-
-
 
         if (p != null){
             TextView t1 = (TextView) v.findViewById(R.id.nameName);
@@ -60,6 +55,4 @@ public class Adapter2 extends ArrayAdapter<Rate> {
         }
         return v;
     }
-
-
 }

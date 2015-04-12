@@ -4,10 +4,26 @@
     android:layout_height="match_parent"
     tools:context="jzkt3.umkc.edu.testtestetestsetestsetes.HistoryActivity">
 
+    <LinearLayout
+        android:fitsSystemWindows="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".MainActivity"
+        android:background="@color/primaryColorLight">
+
     <include
         android:id="@+id/app_bar"
         layout="@layout/app_bar" />
 
+    <ListView
+        android:id="@+id/historylist"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/border"
+        android:divider="@color/primaryColorLight"
+        android:dividerHeight="1dp"/>
 
+    </LinearLayout>
 
 </RelativeLayout>

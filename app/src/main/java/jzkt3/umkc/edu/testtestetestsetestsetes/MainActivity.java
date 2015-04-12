@@ -1,28 +1,14 @@
 package jzkt3.umkc.edu.testtestetestsetestsetes;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.Layout;
-import android.util.JsonWriter;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,14 +21,14 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 
 
+import junit.framework.Assert;
+
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
-import java.util.List;
 
 import static jzkt3.umkc.edu.testtestetestsetestsetes.Keys.EndpointExchangeRates.KEY_BASE;
 import static jzkt3.umkc.edu.testtestetestsetestsetes.Keys.EndpointExchangeRates.KEY_DISCLAIMER;
@@ -54,23 +40,15 @@ import static jzkt3.umkc.edu.testtestetestsetestsetes.Keys.EndpointExchangeRates
 public class MainActivity extends ActionBarActivity {
 
     private Toolbar toolbar;
-
-
     public static ArrayList<Rate> listRates = new ArrayList<>();
     public static ArrayList<String> listFullNames = new ArrayList<>();
-
-
-
     private static VolleySingleton volleySingleton;
     private static RequestQueue requestQueue;
     public static final String URL_EXHANGE_RATES = "http://openexchangerates.org/api/latest.json";
     public static final String URL_FULLNAME = "http://openexchangerates.org/api/currencies.json";
-
     public static String savedText;
     public static String savedText2;
-
     private static ListView listRatesView;
-    //private AdapterGlobalRates adapterGlobalRates;
 
     public static String getRequestURL(){
         return URL_EXHANGE_RATES+"?app_id="+ MyApplication.API_KEY;
@@ -78,10 +56,6 @@ public class MainActivity extends ActionBarActivity {
     public static String getRequestURL2(){
         return URL_FULLNAME;
     }
-
-
-
-
 
 
     @Override
@@ -103,12 +77,7 @@ public class MainActivity extends ActionBarActivity {
 
         sendJsonRequest();
 
-
     }
-
-
-
-
 
     private void sendJsonRequest() {
 
@@ -117,8 +86,9 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onResponse(JSONObject response) {
 
-             listRates = parseJSONResponse(response);
 
+                listRates = parseJSONResponse(response);
+                Assert.assertNotNull("The list of rates is empty",listRates);
                 sendJsonRequest2();
 
             }
@@ -127,11 +97,9 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onErrorResponse(VolleyError error){
                 Toast.makeText(getApplicationContext(), "ERROR" + error.getMessage(), Toast.LENGTH_SHORT).show();
-
             }
         });
         requestQueue.add(request);
-
     }
 
     private void sendJsonRequest2() {
@@ -147,10 +115,9 @@ public class MainActivity extends ActionBarActivity {
                     listRates.get(i).setFullName(listFullNames.get(i));
                 }
 
-
                 listRatesView = (ListView) findViewById(R.id.datlist);
                 Log.d(getPackageName(), listRatesView != null ? "THELIST is not null!" : "THELIST is null!");
-                Adapter2 adapter = new Adapter2(getApplicationContext(),R.layout.rates_layout,listRates);
+                RateAdapter adapter = new RateAdapter(getApplicationContext(),R.layout.rates_layout,listRates);
                 listRatesView.setAdapter(adapter);
 
             }
@@ -159,7 +126,6 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onErrorResponse(VolleyError error){
                 Toast.makeText(getApplicationContext(), "ERROR" + error.getMessage(), Toast.LENGTH_SHORT).show();
-
             }
         });
         requestQueue.add(request);
@@ -210,7 +176,6 @@ public class MainActivity extends ActionBarActivity {
 
             } catch (JSONException e) {
             }
-
         }
         return ListRates;
     }
@@ -223,35 +188,19 @@ public class MainActivity extends ActionBarActivity {
         if (response != null && response.length() > 0) {
             try {
 
-
                 Iterator<?> keys = response.keys();
                 while (keys.hasNext()) {
                     String key = (String) keys.next();
                     String value = response.getString(key);
 
-
-
                     ListFullNames.add(value);
 
                 }
-
-
-
-                //for(int i = 0; i < ListFullNames.size(); i++) {
-                 //   Toast.makeText(this, ListFullNames.get(i), Toast.LENGTH_SHORT)
-                  //          .show();
-                //}
-
             } catch (JSONException e) {
             }
-
         }
         return ListFullNames;
     }
-
-
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -281,8 +230,4 @@ public class MainActivity extends ActionBarActivity {
         }
            return super.onOptionsItemSelected(item);
     }
-
-
-
-
 }

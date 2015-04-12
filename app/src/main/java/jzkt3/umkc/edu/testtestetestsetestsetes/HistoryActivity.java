@@ -4,22 +4,26 @@ import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 
 
 public class HistoryActivity extends ActionBarActivity {
 
     DBAdapter helper;
-    String d = "123";
-    String t = "456";
+    private static ListView listHistoryView;
+    public static ArrayList<History> data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_appbar);
+        setContentView(R.layout.activity_history);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
@@ -29,19 +33,19 @@ public class HistoryActivity extends ActionBarActivity {
 
         helper = new DBAdapter(this);
 
-        //addEntry();
+        viewData();
 
     }
 
-    public void addEntry(){
 
-        long id = helper.insertData(d,t);
-        if(id < 0){
-            Toast.makeText(this,"NO GOOD",Toast.LENGTH_LONG).show();
-        }
-        else{
-            Toast.makeText(this,"ALL GOOD",Toast.LENGTH_LONG).show();
-        }
+    public void viewData(){
+
+        data = helper.getData();
+
+        listHistoryView = (ListView) findViewById(R.id.historylist);
+        Log.d(getPackageName(), listHistoryView != null ? "THE LIST is not null!" : "THELIST is null!");
+        HistoryAdapter adapter = new HistoryAdapter(getApplicationContext(),R.layout.history_layout,data);
+        listHistoryView.setAdapter(adapter);
 
     }
 

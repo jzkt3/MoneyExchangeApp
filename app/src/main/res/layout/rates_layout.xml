@@ -45,7 +45,7 @@
         android:layout_height="wrap_content"
         android:text="ABC"
         android:id="@+id/fnFN"
-        android:textColor="@color/primaryText"
+        android:textColor="@color/primaryColorDark"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="28dp" />
