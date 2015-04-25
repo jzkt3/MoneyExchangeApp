@@ -92,6 +92,7 @@ public class HistoryAdapter extends ArrayAdapter<History> {
                     }
                     
                     notifyDataSetChanged();
+                    Toast.makeText(getContext(),"Deleted",Toast.LENGTH_LONG).show();
                 }
             });
         }

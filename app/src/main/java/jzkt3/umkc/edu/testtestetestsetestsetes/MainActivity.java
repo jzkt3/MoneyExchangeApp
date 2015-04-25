@@ -9,6 +9,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,6 +21,9 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
+import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
+import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
 
 
 import junit.framework.Assert;
@@ -27,6 +32,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Iterator;
 
@@ -37,10 +46,10 @@ import static jzkt3.umkc.edu.testtestetestsetestsetes.Keys.EndpointExchangeRates
 import static jzkt3.umkc.edu.testtestetestsetestsetes.Keys.EndpointExchangeRates.KEY_TIMESTAMP;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements View.OnClickListener {
 
     private Toolbar toolbar;
-    public static ArrayList<Rate> listRates = new ArrayList<>();
+    public static ArrayList<Rate> listRates = new ArrayList<Rate>();
     public static ArrayList<String> listFullNames = new ArrayList<>();
     private static VolleySingleton volleySingleton;
     private static RequestQueue requestQueue;
@@ -49,11 +58,16 @@ public class MainActivity extends ActionBarActivity {
     public static String savedText;
     public static String savedText2;
     private static ListView listRatesView;
+    private static final String TAG_SORT_NAME = "sortName";
+    private static final String TAG_SORT_RATE = "sortRate";
+    public RateAdapter adapter = null;
+    public static Sorter sorter = null;
 
-    public static String getRequestURL(){
-        return URL_EXHANGE_RATES+"?app_id="+ MyApplication.API_KEY;
+    public static String getRequestURL() {
+        return URL_EXHANGE_RATES + "?app_id=" + MyApplication.API_KEY;
     }
-    public static String getRequestURL2(){
+
+    public static String getRequestURL2() {
         return URL_FULLNAME;
     }
 
@@ -70,32 +84,56 @@ public class MainActivity extends ActionBarActivity {
 
         NavigationDrawerFragment drawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.nav_drawer);
-        drawerFragment.setUp(R.id.nav_drawer,(DrawerLayout)findViewById(R.id.drawer_layout),toolbar);
+        drawerFragment.setUp(R.id.nav_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), toolbar);
 
         volleySingleton = VolleySingleton.getInstance();
         requestQueue = volleySingleton.getRequestQueue();
 
         sendJsonRequest();
 
+        ImageView floatingButton = new ImageView(this);
+        floatingButton.setImageResource(R.drawable.plus_button);
+
+        FloatingActionButton actionButton = new FloatingActionButton.Builder(this).setBackgroundDrawable(R.drawable.selector_button).setContentView(floatingButton).build();
+
+        ImageView sortNameIcon = new ImageView(this);
+        sortNameIcon.setImageResource(R.drawable.a_z);
+        ImageView sortRateIcon = new ImageView(this);
+        sortRateIcon.setImageResource(R.drawable.one_two);
+
+        SubActionButton.Builder itemBuilder = new SubActionButton.Builder(this);
+        SubActionButton sortNameButton = itemBuilder.setContentView(sortNameIcon).build();
+        SubActionButton sortRateButton = itemBuilder.setContentView(sortRateIcon).build();
+        sortNameButton.setTag(TAG_SORT_NAME);
+        sortRateButton.setTag(TAG_SORT_RATE);
+        sortNameButton.setOnClickListener(this);
+        sortRateButton.setOnClickListener(this);
+
+        FloatingActionMenu actionMenu = new FloatingActionMenu.Builder(this)
+                .addSubActionView(sortNameButton)
+                .addSubActionView(sortRateButton)
+                .attachTo(actionButton)
+                .build();
+
     }
 
     private void sendJsonRequest() {
 
         JSONObject placeholder = new JSONObject();
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,getRequestURL(),placeholder,new Response.Listener<JSONObject>() {
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, getRequestURL(), placeholder, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
 
 
                 listRates = parseJSONResponse(response);
-                Assert.assertNotNull("The list of rates is empty",listRates);
+                Assert.assertNotNull("The list of rates is empty", listRates);
                 sendJsonRequest2();
 
             }
 
-        }, new Response.ErrorListener(){
+        }, new Response.ErrorListener() {
             @Override
-            public void onErrorResponse(VolleyError error){
+            public void onErrorResponse(VolleyError error) {
                 Toast.makeText(getApplicationContext(), "ERROR" + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -105,26 +143,26 @@ public class MainActivity extends ActionBarActivity {
     private void sendJsonRequest2() {
 
         JSONObject placeholder = new JSONObject();
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,getRequestURL2(),placeholder,new Response.Listener<JSONObject>() {
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, getRequestURL2(), placeholder, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
 
                 listFullNames = parseJSONResponse2(response);
 
-                for (int i = 0; i < listFullNames.size();i++){
+                for (int i = 0; i < listFullNames.size(); i++) {
                     listRates.get(i).setFullName(listFullNames.get(i));
                 }
 
                 listRatesView = (ListView) findViewById(R.id.datlist);
                 Log.d(getPackageName(), listRatesView != null ? "THELIST is not null!" : "THELIST is null!");
-                RateAdapter adapter = new RateAdapter(getApplicationContext(),R.layout.rates_layout,listRates);
+                adapter = new RateAdapter(getApplicationContext(), R.layout.rates_layout, listRates);
                 listRatesView.setAdapter(adapter);
 
             }
 
-        }, new Response.ErrorListener(){
+        }, new Response.ErrorListener() {
             @Override
-            public void onErrorResponse(VolleyError error){
+            public void onErrorResponse(VolleyError error) {
                 Toast.makeText(getApplicationContext(), "ERROR" + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -132,7 +170,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
 
-    private ArrayList<Rate> parseJSONResponse(JSONObject response){
+    private ArrayList<Rate> parseJSONResponse(JSONObject response) {
 
         ArrayList<Rate> ListRates = new ArrayList<>();
 
@@ -149,11 +187,10 @@ public class MainActivity extends ActionBarActivity {
                 //Parse timestamp
                 String timestamp = response.getString(KEY_TIMESTAMP);
                 int timeValue = Integer.parseInt(timestamp);
-                Date date = new Date ();
-                date.setTime((long)timeValue*1000);
+                Date date = new Date();
+                date.setTime((long) timeValue * 1000);
                 TextView timestampView = (TextView) findViewById(R.id.timestampText);
                 timestampView.setText(date.toString());
-
 
 
                 String base = response.getString(KEY_BASE);
@@ -181,7 +218,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
 
-    private ArrayList<String> parseJSONResponse2(JSONObject response){
+    private ArrayList<String> parseJSONResponse2(JSONObject response) {
 
         ArrayList<String> ListFullNames = new ArrayList<>();
 
@@ -217,17 +254,48 @@ public class MainActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.action_settings:
-                Toast.makeText(this,item.getTitle(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, item.getTitle(), Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.navigate:
-                Intent myIntent = new Intent(this,InfoActivity.class);
+                Intent myIntent = new Intent(this, InfoActivity.class);
                 startActivity(myIntent);
 
-                Toast.makeText(this,item.getTitle(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, item.getTitle(), Toast.LENGTH_SHORT).show();
                 return true;
         }
-           return super.onOptionsItemSelected(item);
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onClick(View v) {
+
+        if (v.getTag().equals(TAG_SORT_NAME)) {
+            Toast.makeText(this, "sort name", Toast.LENGTH_SHORT).show();
+
+            Collections.sort(listRates, new Comparator<Rate>() {
+                @Override
+                public int compare(Rate lhs, Rate rhs) {
+                    return lhs.getFullName().compareTo(rhs.getFullName());
+                }
+            });
+            adapter.notifyDataSetChanged();
+        }
+
+        if (v.getTag().equals(TAG_SORT_RATE)) {
+            Toast.makeText(this, "sort rate", Toast.LENGTH_SHORT).show();
+
+            Collections.sort(listRates, new Comparator<Rate>() {
+                @Override
+                public int compare(Rate lhs, Rate rhs) {
+
+                    return Double.compare(lhs.getExchangeRate(), rhs.getExchangeRate());
+                }
+            });
+            adapter.notifyDataSetChanged();
+
+        }
+
     }
 }
