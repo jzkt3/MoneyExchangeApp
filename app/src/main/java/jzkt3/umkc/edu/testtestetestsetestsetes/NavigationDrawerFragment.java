@@ -67,8 +67,8 @@ public class NavigationDrawerFragment extends Fragment implements DrawerAdapter.
 
     public static List<Information> getData(){
         List<Information> data = new ArrayList<>();
-        int[] icons ={R.drawable.globe_1,R.drawable.money_exchange,R.drawable.check_book};
-        String[] titles ={"All Exchange Rates","Convert","Conversion History"};
+        int[] icons ={R.drawable.globe_1,R.drawable.bar_graph,R.drawable.money_exchange,R.drawable.check_book};
+        String[] titles ={"Exchange Rates","Graph","Convert","Conversion History"};
 
         for (int i=0;i<titles.length && i<icons.length;i++){
             Information current = new Information();
@@ -107,9 +107,9 @@ public class NavigationDrawerFragment extends Fragment implements DrawerAdapter.
             public void onDrawerSlide(View drawerView, float slideOffset) {
                 super.onDrawerSlide(drawerView, slideOffset);
 
-                if (slideOffset < 0.6) {
-                    toolbar.setAlpha(1 - slideOffset);
-                }
+                ((MainActivity) getActivity()).onDrawerSlide(slideOffset);
+                toolbar.setAlpha(1 - slideOffset / 2);
+
             }
         };
 
@@ -146,9 +146,12 @@ public class NavigationDrawerFragment extends Fragment implements DrawerAdapter.
                 startActivity(new Intent(getActivity(),MainActivity.class));
             }
             if (position == 1){
-                startActivity(new Intent(getActivity(),ConvertActivity.class));
+                startActivity(new Intent(getActivity(),GraphActivity.class));
             }
-            if (position == 2){
+            if (position == 2) {
+                startActivity(new Intent(getActivity(), ConvertActivity.class));
+            }
+            if (position == 3){
                 startActivity(new Intent(getActivity(),HistoryActivity.class));
             }
     }

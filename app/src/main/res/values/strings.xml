@@ -11,18 +11,20 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="drawer_open">Drawer open</string>
     <string name="drawer_close">Drawer close</string>
-    <string name="title_activity_all_rates">All Exchange Rates</string>
+    <string name="title_activity_all_rates">Exchange Rates</string>
     <string name="title_activity_convert">Convert</string>
     <string name="title_activity_history">Conversion History</string>
     <string name="last_updated">Last updated: </string>
     <string name="convert_button_text">Convert</string>
     <string name="reset_button_text">Reset</string>
     <string name="currency_prompt">Choose a currency</string>
+    <string name="title_activity_graph">Graph</string>
 
     <string-array name="tabs">
         <item>TAB 1</item>
         <item>TAB 2</item>
         <item>TAB 3</item>
     </string-array>
+
 
 </resources>

@@ -24,6 +24,8 @@
         android:layout_centerVertical = "true"
         android:layout_gravity="center_vertical"
         android:text="Test text"
-        android:textColor="@color/primaryText"/>
+        android:textSize="13.75dp"
+        android:textColor="@color/primaryText"
+        android:layout_marginStart="18dp"/>
 
 </LinearLayout>

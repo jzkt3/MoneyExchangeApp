@@ -8,6 +8,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.series.BarGraphSeries;
+import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
+import com.jjoe64.graphview.series.PointsGraphSeries;
+
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class InfoActivity extends ActionBarActivity {
 
@@ -30,6 +39,7 @@ public class InfoActivity extends ActionBarActivity {
 
         licenseText = (TextView) findViewById(R.id.licenseText);
         licenseText.setText(MainActivity.savedText2);
+
     }
 
 

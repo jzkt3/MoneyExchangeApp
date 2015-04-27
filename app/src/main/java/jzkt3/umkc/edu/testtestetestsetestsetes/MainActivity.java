@@ -60,8 +60,12 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     private static ListView listRatesView;
     private static final String TAG_SORT_NAME = "sortName";
     private static final String TAG_SORT_RATE = "sortRate";
-    public RateAdapter adapter = null;
+    private static final String TAG_SORT_NAME2 = "sortName2";
+    private static final String TAG_SORT_RATE2 = "sortRate2";
+    public RateAdapter adapter;
     public static Sorter sorter = null;
+    private FloatingActionMenu actionMenu;
+    private FloatingActionButton actionButton;
 
     public static String getRequestURL() {
         return URL_EXHANGE_RATES + "?app_id=" + MyApplication.API_KEY;
@@ -76,7 +80,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setTitle("All Exchange Rates");
+        setTitle("Exchange Rates");
 
         toolbar = (Toolbar) findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
@@ -94,24 +98,41 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         ImageView floatingButton = new ImageView(this);
         floatingButton.setImageResource(R.drawable.plus_button);
 
-        FloatingActionButton actionButton = new FloatingActionButton.Builder(this).setBackgroundDrawable(R.drawable.selector_button).setContentView(floatingButton).build();
+        actionButton = new FloatingActionButton.Builder(this).setBackgroundDrawable(R.drawable.selector_button)
+                .setContentView(floatingButton)
+                .build();
+
+
 
         ImageView sortNameIcon = new ImageView(this);
         sortNameIcon.setImageResource(R.drawable.a_z);
+        ImageView sortNameIcon2 = new ImageView(this);
+        sortNameIcon2.setImageResource(R.drawable.z_a);
         ImageView sortRateIcon = new ImageView(this);
         sortRateIcon.setImageResource(R.drawable.one_two);
+        ImageView sortRateIcon2 = new ImageView(this);
+        sortRateIcon2.setImageResource(R.drawable.two_one);
 
         SubActionButton.Builder itemBuilder = new SubActionButton.Builder(this);
-        SubActionButton sortNameButton = itemBuilder.setContentView(sortNameIcon).build();
         SubActionButton sortRateButton = itemBuilder.setContentView(sortRateIcon).build();
-        sortNameButton.setTag(TAG_SORT_NAME);
-        sortRateButton.setTag(TAG_SORT_RATE);
-        sortNameButton.setOnClickListener(this);
-        sortRateButton.setOnClickListener(this);
+        SubActionButton sortNameButton = itemBuilder.setContentView(sortNameIcon).build();
+        SubActionButton sortRateButton2 = itemBuilder.setContentView(sortRateIcon2).build();
+        SubActionButton sortNameButton2 = itemBuilder.setContentView(sortNameIcon2).build();
 
-        FloatingActionMenu actionMenu = new FloatingActionMenu.Builder(this)
-                .addSubActionView(sortNameButton)
+        sortRateButton.setTag(TAG_SORT_RATE);
+        sortNameButton.setTag(TAG_SORT_NAME);
+        sortRateButton2.setTag(TAG_SORT_RATE2);
+        sortNameButton2.setTag(TAG_SORT_NAME2);
+        sortRateButton.setOnClickListener(this);
+        sortNameButton.setOnClickListener(this);
+        sortRateButton2.setOnClickListener(this);
+        sortNameButton2.setOnClickListener(this);
+
+        actionMenu = new FloatingActionMenu.Builder(this)
+                .addSubActionView(sortRateButton2)
                 .addSubActionView(sortRateButton)
+                .addSubActionView(sortNameButton2)
+                .addSubActionView(sortNameButton)
                 .attachTo(actionButton)
                 .build();
 
@@ -256,13 +277,10 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         //noinspection SimplifiableIfStatement
         switch (item.getItemId()) {
             case R.id.action_settings:
-                Toast.makeText(this, item.getTitle(), Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.navigate:
                 Intent myIntent = new Intent(this, InfoActivity.class);
                 startActivity(myIntent);
-
-                Toast.makeText(this, item.getTitle(), Toast.LENGTH_SHORT).show();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -272,8 +290,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     public void onClick(View v) {
 
         if (v.getTag().equals(TAG_SORT_NAME)) {
-            Toast.makeText(this, "sort name", Toast.LENGTH_SHORT).show();
-
             Collections.sort(listRates, new Comparator<Rate>() {
                 @Override
                 public int compare(Rate lhs, Rate rhs) {
@@ -283,9 +299,17 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             adapter.notifyDataSetChanged();
         }
 
-        if (v.getTag().equals(TAG_SORT_RATE)) {
-            Toast.makeText(this, "sort rate", Toast.LENGTH_SHORT).show();
+        if (v.getTag().equals(TAG_SORT_NAME2)){
+            Collections.sort(listRates, new Comparator<Rate>() {
+                @Override
+                public int compare(Rate lhs, Rate rhs) {
+                    return rhs.getFullName().compareTo(lhs.getFullName());
+                }
+            });
+            adapter.notifyDataSetChanged();
+        }
 
+        if (v.getTag().equals(TAG_SORT_RATE)) {
             Collections.sort(listRates, new Comparator<Rate>() {
                 @Override
                 public int compare(Rate lhs, Rate rhs) {
@@ -294,8 +318,30 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 }
             });
             adapter.notifyDataSetChanged();
-
         }
 
+        if (v.getTag().equals(TAG_SORT_RATE2)){
+            Collections.sort(listRates, new Comparator<Rate>() {
+                @Override
+                public int compare(Rate lhs, Rate rhs) {
+                    return Double.compare(rhs.getExchangeRate(), lhs.getExchangeRate());
+                }
+            });
+            adapter.notifyDataSetChanged();
+        }
+
+    }
+
+    public void toggleTranslateFloatingActionButton(float slideOffset){
+        if(actionMenu != null){
+            if(actionMenu.isOpen()){
+                actionMenu.close(true);
+            }
+            actionButton.setTranslationY(slideOffset * 300);
+        }
+    }
+
+    public void onDrawerSlide(float slideOffset){
+        toggleTranslateFloatingActionButton(slideOffset);
     }
 }
