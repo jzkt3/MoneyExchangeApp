@@ -13,7 +13,7 @@
         android:layout_width="140dp"
         android:layout_height="35dp"
         android:clickable="true"
-        android:hint=" Enter USD"
+        android:hint="@string/enter_dollars"
         android:inputType="numberDecimal"
         android:maxLength="20"
         android:background="@drawable/edit_text_border"
@@ -32,7 +32,7 @@
         android:background="@drawable/edit_text_border"
         android:layout_alignRight="@+id/ratesSpinner"
         android:gravity="center"
-        android:hint="Press Convert button"
+        android:hint="@string/press_convert"
         android:textColorHint="@color/primaryColorLight"
         android:textColor="@color/primaryText"/>
 
@@ -44,7 +44,7 @@
         android:layout_alignLeft="@id/editDollars"
         android:gravity="center"
         android:textColor="@color/primaryColorDark"
-        android:text="U.S Dollars"
+        android:text="@string/the_dollars"
         android:layout_marginTop="26dp"/>
 
     <TextView
@@ -55,7 +55,7 @@
         android:layout_alignRight="@id/convertedText"
         android:gravity="center"
         android:textColor="@color/primaryColorDark"
-        android:text="Result"
+        android:text="@string/the_result"
         android:layout_marginTop="26dp"/>
 
 
@@ -91,7 +91,8 @@
         android:layout_height="wrap_content"
         android:src="@drawable/right_arrow"
         android:layout_marginTop="112dp"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:contentDescription="@string/arrow_description" />
 
 
 

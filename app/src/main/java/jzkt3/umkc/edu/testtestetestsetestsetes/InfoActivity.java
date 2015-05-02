@@ -1,21 +1,11 @@
 package jzkt3.umkc.edu.testtestetestsetestsetes;
 
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
-
-import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.series.BarGraphSeries;
-import com.jjoe64.graphview.series.DataPoint;
-import com.jjoe64.graphview.series.LineGraphSeries;
-import com.jjoe64.graphview.series.PointsGraphSeries;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class InfoActivity extends ActionBarActivity {
@@ -30,13 +20,11 @@ public class InfoActivity extends ActionBarActivity {
 
         Toolbar toolbar= (Toolbar) findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
-
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         disclaimerText = (TextView) findViewById(R.id.disclaimerText);
         disclaimerText.setText(MainActivity.savedText);
-
         licenseText = (TextView) findViewById(R.id.licenseText);
         licenseText.setText(MainActivity.savedText2);
 

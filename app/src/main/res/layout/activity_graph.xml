@@ -19,7 +19,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Graph is zoomable and scrollable"
+        android:text="@string/zoomable_scrollable"
         android:id="@+id/textView2"
         android:layout_below="@+id/graph"
         android:layout_centerHorizontal="true"
@@ -28,7 +28,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Current Exchange Rates"
+        android:text="@string/current_rates"
         android:textColor="@color/primaryText"
         android:id="@+id/textView3"
         android:layout_above="@+id/graph"

@@ -8,8 +8,6 @@ import android.view.MenuItem;
 
 import com.jjoe64.graphview.DefaultLabelFormatter;
 import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.LabelFormatter;
-import com.jjoe64.graphview.helper.StaticLabelsFormatter;
 import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
 
@@ -25,14 +23,17 @@ public class GraphActivity extends ActionBarActivity {
 
         Toolbar toolbar= (Toolbar) findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
-
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        setupBarGraph();
+
+    }
+
+    private void setupBarGraph() {
 
         GraphView graph = (GraphView) findViewById(R.id.graph);
-        final List<Rate> graphList = MainActivity.listRates;
-
+        final List<Rate> graphList = MainActivity.getList();
 
         DataPoint[] d = new DataPoint[graphList.size()];
         for (int i = 0; i < graphList.size(); i++) {
@@ -49,36 +50,27 @@ public class GraphActivity extends ActionBarActivity {
         graph.getViewport().setScalable(true);
         graph.getViewport().setScrollable(true);
 
-
-
-
-        final String[] horizontalLables;
-        horizontalLables = new String[graphList.size() + 1];
+        final String[] horizontalLabels;
+        horizontalLabels = new String[graphList.size() + 1];
 
         for (int i = 0; i < graphList.size();i++){
-            horizontalLables[i] = graphList.get(i).getName();
+            horizontalLabels[i] = graphList.get(i).getName();
         }
-
 
         graph.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter() {
             @Override
             public String formatLabel(double value, boolean isValueX) {
                 if (isValueX) {
                     if(value < graphList.size()) {
-                        return horizontalLables[(int) value];
+                        return horizontalLabels[(int) value];
                     }
                     else{
                         return " ";
                     }
-
                 }
                 return String.format("%.2f", value);
             }
         });
-
-
-
-
     }
 
 

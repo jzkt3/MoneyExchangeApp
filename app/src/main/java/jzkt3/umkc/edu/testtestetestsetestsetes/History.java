@@ -11,9 +11,7 @@ public class History {
     private String dollars;
     private String result;
 
-    public History() {
-
-    }
+    public History() {}
 
     public History(String date,String time,String name,String rate,String dollars,String result){
         this.date = date;

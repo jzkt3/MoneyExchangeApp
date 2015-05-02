@@ -1,15 +1,12 @@
 package jzkt3.umkc.edu.testtestetestsetestsetes;
 
-import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -27,7 +24,6 @@ public class HistoryActivity extends ActionBarActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
-
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -41,7 +37,6 @@ public class HistoryActivity extends ActionBarActivity {
     public void viewData(){
 
         data = helper.getData();
-
         listHistoryView = (ListView) findViewById(R.id.historylist);
         Log.d(getPackageName(), listHistoryView != null ? "THE LIST is not null!" : "THELIST is null!");
         HistoryAdapter adapter = new HistoryAdapter(getApplicationContext(),R.layout.history_layout,data);
@@ -72,7 +67,6 @@ public class HistoryActivity extends ActionBarActivity {
             //NavUtils.navigateUpFromSameTask(this);
             finish();
         }
-
         return super.onOptionsItemSelected(item);
     }
 }

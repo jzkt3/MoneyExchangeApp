@@ -1,14 +1,10 @@
 package jzkt3.umkc.edu.testtestetestsetestsetes;
 
-import android.content.ClipData;
 import android.content.Context;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -41,7 +37,6 @@ public class RateAdapter extends ArrayAdapter<Rate> {
             TextView t1 = (TextView) v.findViewById(R.id.nameName);
             TextView t2 = (TextView) v.findViewById(R.id.rateRate);
             TextView t3 = (TextView) v.findViewById(R.id.fnFN);
-
 
             if (t1 !=null){
                 t1.setText(p.getFullName());

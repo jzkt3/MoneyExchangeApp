@@ -19,9 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class NavigationDrawerFragment extends Fragment implements DrawerAdapter.ClickListener {
 
     private RecyclerView recyclerView;
@@ -38,7 +35,6 @@ public class NavigationDrawerFragment extends Fragment implements DrawerAdapter.
     Context context;
 
     public NavigationDrawerFragment() {
-        // Required empty public constructor
     }
 
     @Override
@@ -156,6 +152,4 @@ public class NavigationDrawerFragment extends Fragment implements DrawerAdapter.
             }
     }
 
-    public interface NavigationDrawerCallbacks {
-    }
 }

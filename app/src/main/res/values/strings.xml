@@ -19,6 +19,17 @@
     <string name="reset_button_text">Reset</string>
     <string name="currency_prompt">Choose a currency</string>
     <string name="title_activity_graph">Graph</string>
+    <string name="enter_dollars">Enter USD</string>
+    <string name="press_convert">Press Convert button</string>
+    <string name="the_dollars">U.S Dollars</string>
+    <string name="the_result">Result</string>
+    <string name="arrow_description">The Arrow</string>
+    <string name="zoomable_scrollable">Graph is zoomable and scrollable</string>
+    <string name="current_rates">Current Exchange Rates</string>
+    <string name="the_license">License</string>
+    <string name="loading_placeholder">LOADING…</string>
+    <string name="result_result">Result: </string>
+
 
     <string-array name="tabs">
         <item>TAB 1</item>

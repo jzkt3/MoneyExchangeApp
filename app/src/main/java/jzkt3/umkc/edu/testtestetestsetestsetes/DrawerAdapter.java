@@ -19,9 +19,7 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.MyViewHold
     private LayoutInflater inflater;
     List<Information> DrawerData = Collections.emptyList();
     private Context context;
-
     private ClickListener clickListener;
-
 
     public DrawerAdapter(Context context, List<Information> drawerData){
         this.context = context;
@@ -29,21 +27,18 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.MyViewHold
         this.DrawerData = drawerData;
     }
 
-
     public void delete(int position){
          DrawerData.remove(position);
         notifyItemRemoved(position);
 
     }
 
-
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View view = inflater.inflate(R.layout.custom_row,parent,false);
-        MyViewHolder holder = new MyViewHolder(view);
 
-        return holder;
+        return new MyViewHolder(view);
     }
 
     @Override
@@ -60,7 +55,6 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.MyViewHold
         this.clickListener = clickListener;
 
     }
-
 
     @Override
     public int getItemCount() {
@@ -81,20 +75,10 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.MyViewHold
 
         @Override
         public void onClick(View v) {
-
-            //Place holder activity
-
-            //if (getPosition() == 1){
-            //    context.startActivity(new Intent(context,InfoActivity.class));
-            //
-            //}
-
-
             if (clickListener != null)
             {
                 clickListener.itemClicked(v,getPosition());
             }
-
         }
     }
 

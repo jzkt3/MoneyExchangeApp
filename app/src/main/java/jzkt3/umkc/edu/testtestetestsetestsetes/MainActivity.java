@@ -1,6 +1,5 @@
 package jzkt3.umkc.edu.testtestetestsetestsetes;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -15,7 +14,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -25,15 +23,12 @@ import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
 import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
 
-
 import junit.framework.Assert;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -49,7 +44,7 @@ import static jzkt3.umkc.edu.testtestetestsetestsetes.Keys.EndpointExchangeRates
 public class MainActivity extends ActionBarActivity implements View.OnClickListener {
 
     private Toolbar toolbar;
-    public static ArrayList<Rate> listRates = new ArrayList<Rate>();
+    private static ArrayList<Rate> listRates = new ArrayList<>();
     public static ArrayList<String> listFullNames = new ArrayList<>();
     private static VolleySingleton volleySingleton;
     private static RequestQueue requestQueue;
@@ -63,9 +58,17 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     private static final String TAG_SORT_NAME2 = "sortName2";
     private static final String TAG_SORT_RATE2 = "sortRate2";
     public RateAdapter adapter;
-    public static Sorter sorter = null;
     private FloatingActionMenu actionMenu;
     private FloatingActionButton actionButton;
+    private SubActionButton sortRateButton;
+    private SubActionButton sortNameButton;
+    private SubActionButton sortRateButton2;
+    private SubActionButton sortNameButton2;
+    private ImageView sortNameIcon;
+    private ImageView sortNameIcon2;
+    private ImageView sortRateIcon;
+    private ImageView sortRateIcon2;
+
 
     public static String getRequestURL() {
         return URL_EXHANGE_RATES + "?app_id=" + MyApplication.API_KEY;
@@ -92,32 +95,52 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
         volleySingleton = VolleySingleton.getInstance();
         requestQueue = volleySingleton.getRequestQueue();
-
         sendJsonRequest();
 
         ImageView floatingButton = new ImageView(this);
         floatingButton.setImageResource(R.drawable.plus_button);
-
         actionButton = new FloatingActionButton.Builder(this).setBackgroundDrawable(R.drawable.selector_button)
                 .setContentView(floatingButton)
                 .build();
 
+        setupActionMenu();
+    }
 
+    private void setupActionMenu() {
 
-        ImageView sortNameIcon = new ImageView(this);
+        sortNameIcon = new ImageView(this);
         sortNameIcon.setImageResource(R.drawable.a_z);
-        ImageView sortNameIcon2 = new ImageView(this);
+        sortNameIcon2 = new ImageView(this);
         sortNameIcon2.setImageResource(R.drawable.z_a);
-        ImageView sortRateIcon = new ImageView(this);
+        sortRateIcon = new ImageView(this);
         sortRateIcon.setImageResource(R.drawable.one_two);
-        ImageView sortRateIcon2 = new ImageView(this);
+        sortRateIcon2 = new ImageView(this);
         sortRateIcon2.setImageResource(R.drawable.two_one);
 
+        setupActionButton();
+
+        actionMenu = new FloatingActionMenu.Builder(this)
+                .addSubActionView(sortRateButton2)
+                .addSubActionView(sortRateButton)
+                .addSubActionView(sortNameButton2)
+                .addSubActionView(sortNameButton)
+                .attachTo(actionButton)
+                .build();
+    }
+
+    private void setupActionButton() {
+
         SubActionButton.Builder itemBuilder = new SubActionButton.Builder(this);
-        SubActionButton sortRateButton = itemBuilder.setContentView(sortRateIcon).build();
-        SubActionButton sortNameButton = itemBuilder.setContentView(sortNameIcon).build();
-        SubActionButton sortRateButton2 = itemBuilder.setContentView(sortRateIcon2).build();
-        SubActionButton sortNameButton2 = itemBuilder.setContentView(sortNameIcon2).build();
+        sortRateButton = itemBuilder.setContentView(sortRateIcon).build();
+        sortNameButton = itemBuilder.setContentView(sortNameIcon).build();
+        sortRateButton2 = itemBuilder.setContentView(sortRateIcon2).build();
+        sortNameButton2 = itemBuilder.setContentView(sortNameIcon2).build();
+
+        onclickAndTag();
+
+    }
+
+    private void onclickAndTag() {
 
         sortRateButton.setTag(TAG_SORT_RATE);
         sortNameButton.setTag(TAG_SORT_NAME);
@@ -127,16 +150,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         sortNameButton.setOnClickListener(this);
         sortRateButton2.setOnClickListener(this);
         sortNameButton2.setOnClickListener(this);
-
-        actionMenu = new FloatingActionMenu.Builder(this)
-                .addSubActionView(sortRateButton2)
-                .addSubActionView(sortRateButton)
-                .addSubActionView(sortNameButton2)
-                .addSubActionView(sortNameButton)
-                .attachTo(actionButton)
-                .build();
-
     }
+
 
     private void sendJsonRequest() {
 
@@ -144,7 +159,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, getRequestURL(), placeholder, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-
 
                 listRates = parseJSONResponse(response);
                 Assert.assertNotNull("The list of rates is empty", listRates);
@@ -198,12 +212,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         if (response != null && response.length() > 0) {
             try {
 
-                String disclaimer = response.getString(KEY_DISCLAIMER);
-                savedText = disclaimer;
+                savedText = response.getString(KEY_DISCLAIMER);
 
-                String license = response.getString(KEY_LICENSE);
-                savedText2 = license;
-
+                savedText2 = response.getString(KEY_LICENSE);
 
                 //Parse timestamp
                 String timestamp = response.getString(KEY_TIMESTAMP);
@@ -213,11 +224,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 TextView timestampView = (TextView) findViewById(R.id.timestampText);
                 timestampView.setText(date.toString());
 
-
                 String base = response.getString(KEY_BASE);
-
                 JSONObject objectRates = response.getJSONObject(KEY_RATES);
-
 
                 Iterator<?> keys = objectRates.keys();
                 while (keys.hasNext()) {
@@ -229,7 +237,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                     double doubleValue = Double.parseDouble(value);
                     rate.setExchangeRate(doubleValue);
                     ListRates.add(rate);
-
                 }
 
             } catch (JSONException e) {
@@ -343,5 +350,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
     public void onDrawerSlide(float slideOffset){
         toggleTranslateFloatingActionButton(slideOffset);
+    }
+
+    public static ArrayList<Rate> getList(){
+        return listRates;
     }
 }

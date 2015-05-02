@@ -1,6 +1,6 @@
 package jzkt3.umkc.edu.testtestetestsetestsetes;
 
-import android.support.v4.widget.DrawerLayout;
+import android.content.Context;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -12,7 +12,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,6 +38,7 @@ public class ConvertActivity extends ActionBarActivity {
     private static double getSpinnerItemRate;
     private static String getSpinnerItemName;
     DBAdapter helper;
+    private static int maxLayoutSize = 1000000000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,12 +47,10 @@ public class ConvertActivity extends ActionBarActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
-
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        List<Rate> rates = (MainActivity.listRates);
-
+        List<Rate> rates = (MainActivity.getList());
         try {
             setSpinner(rates);
         }
@@ -63,10 +61,14 @@ public class ConvertActivity extends ActionBarActivity {
         mEdit   = (EditText)findViewById(R.id.editDollars);
         mEdit.setGravity(Gravity.CENTER);
         converted = (TextView) findViewById(R.id.convertedText);
-
         reset();
 
         helper = new DBAdapter(this);
+        setUpOnclick();
+
+    }
+
+    private void setUpOnclick() {
 
 
         Button convertButton = (Button) findViewById(R.id.convertButton);
@@ -90,7 +92,7 @@ public class ConvertActivity extends ActionBarActivity {
                     conversion1 = USdollars * getSpinnerItemRate;
 
                     // Set double precision to 2 decimal places
-                    Double toBeTruncated = new Double(conversion1);
+                    Double toBeTruncated = conversion1;
                     Double truncatedDouble = new BigDecimal(toBeTruncated).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
                     finalResult = truncatedDouble;
 
@@ -123,6 +125,7 @@ public class ConvertActivity extends ActionBarActivity {
                 }
             }
         });
+
     }
 
 
@@ -137,8 +140,7 @@ public class ConvertActivity extends ActionBarActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         if(rates == null){
-            Exception e = new Exception("No rates found");
-            throw e;
+            throw new Exception("No rates found");
         }
 
         spinner.setAdapter(adapter);
@@ -160,7 +162,7 @@ public class ConvertActivity extends ActionBarActivity {
     public void hideKeyboard(){
 
         InputMethodManager inputManager = (InputMethodManager)
-                getSystemService(ConvertActivity.this.INPUT_METHOD_SERVICE);
+                getSystemService(INPUT_METHOD_SERVICE);
 
         inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
                 InputMethodManager.HIDE_NOT_ALWAYS);
@@ -172,9 +174,8 @@ public class ConvertActivity extends ActionBarActivity {
         // Checks if the double is too large to fit into layout
         // Throws:
         // Exception - if double is larger than 1 billion
-        if(d > 1000000000){
-            Exception z = new Exception("Number is too big");
-            throw z;
+        if(d > maxLayoutSize){
+            throw new Exception("Number is too big");
         }
 
         return Double.toString(d);

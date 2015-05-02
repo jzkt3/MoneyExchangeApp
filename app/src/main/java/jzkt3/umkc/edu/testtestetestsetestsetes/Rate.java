@@ -8,9 +8,7 @@ public class Rate {
     private double exchangeRate;
     private String fullName;
 
-    public Rate(){
-
-    }
+    public Rate(){}
 
     public Rate(String name,double exchangeRate,String fullName){
 
