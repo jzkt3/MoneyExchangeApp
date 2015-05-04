@@ -6,16 +6,33 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
 
+import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
+import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
+import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
+
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 
-public class HistoryActivity extends ActionBarActivity {
+public class HistoryActivity extends ActionBarActivity implements View.OnClickListener {
 
     DBAdapter helper;
     private static ListView listHistoryView;
     public static ArrayList<History> data;
+    private FloatingActionButton actionButton;
+    private ImageView sortNameIcon;
+    private ImageView sortNameIcon2;
+    private SubActionButton sortNameButton;
+    private SubActionButton sortNameButton2;
+    private FloatingActionMenu actionMenu;
+    private static final String TAG_SORT_NAME = "sortName";
+    private static final String TAG_SORT_NAME2 = "sortName2";
+    public HistoryAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +48,49 @@ public class HistoryActivity extends ActionBarActivity {
 
         viewData();
 
+        ImageView floatingButton = new ImageView(this);
+        floatingButton.setImageResource(R.drawable.plus_button);
+        actionButton = new FloatingActionButton.Builder(this).setBackgroundDrawable(R.drawable.selector_button)
+                .setContentView(floatingButton)
+                .build();
+
+        setupActionMenu();
+
+    }
+
+    private void setupActionMenu() {
+
+        sortNameIcon = new ImageView(this);
+        sortNameIcon.setImageResource(R.drawable.a_z);
+        sortNameIcon2 = new ImageView(this);
+        sortNameIcon2.setImageResource(R.drawable.z_a);
+
+        setupActionButton();
+
+        actionMenu = new FloatingActionMenu.Builder(this)
+                .addSubActionView(sortNameButton2)
+                .addSubActionView(sortNameButton)
+                .attachTo(actionButton)
+                .build();
+
+    }
+
+    private void setupActionButton() {
+
+        SubActionButton.Builder itemBuilder = new SubActionButton.Builder(this);
+        sortNameButton = itemBuilder.setContentView(sortNameIcon).build();
+        sortNameButton2 = itemBuilder.setContentView(sortNameIcon2).build();
+
+        onclickAndTag();
+    }
+
+    private void onclickAndTag() {
+
+        sortNameButton.setTag(TAG_SORT_NAME);
+        sortNameButton2.setTag(TAG_SORT_NAME2);
+        sortNameButton.setOnClickListener(this);
+        sortNameButton2.setOnClickListener(this);
+
     }
 
 
@@ -39,7 +99,7 @@ public class HistoryActivity extends ActionBarActivity {
         data = helper.getData();
         listHistoryView = (ListView) findViewById(R.id.historylist);
         Log.d(getPackageName(), listHistoryView != null ? "THE LIST is not null!" : "THELIST is null!");
-        HistoryAdapter adapter = new HistoryAdapter(getApplicationContext(),R.layout.history_layout,data);
+        adapter = new HistoryAdapter(getApplicationContext(),R.layout.history_layout,data);
         listHistoryView.setAdapter(adapter);
 
     }
@@ -68,5 +128,28 @@ public class HistoryActivity extends ActionBarActivity {
             finish();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getTag().equals(TAG_SORT_NAME)) {
+            Collections.sort(data, new Comparator<History>() {
+                @Override
+                public int compare(History lhs, History rhs) {
+                    return lhs.getName().compareTo(rhs.getName());
+                }
+            });
+            adapter.notifyDataSetChanged();
+        }
+
+        if (v.getTag().equals(TAG_SORT_NAME2)){
+            Collections.sort(data, new Comparator<History>() {
+                @Override
+                public int compare(History lhs, History rhs) {
+                    return rhs.getName().compareTo(lhs.getName());
+                }
+            });
+            adapter.notifyDataSetChanged();
+        }
     }
 }

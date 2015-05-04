@@ -5,11 +5,16 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.jjoe64.graphview.DefaultLabelFormatter;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
+import com.jjoe64.graphview.series.PointsGraphSeries;
 
 import java.util.List;
 
@@ -26,11 +31,36 @@ public class GraphActivity extends ActionBarActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        setupBarGraph();
+        Button barGraphButton = (Button) findViewById(R.id.button1);
+        Button lineGraphButton = (Button) findViewById(R.id.button2);
+        Button pointGraphButton = (Button) findViewById(R.id.button3);
+        final TextView selectText = (TextView) findViewById(R.id.selectText);
+
+        barGraphButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectText.setText(null);
+                setupGraph(1);
+            }
+        });
+        lineGraphButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectText.setText(null);
+                setupGraph(2);
+            }
+        });
+        pointGraphButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectText.setText(null);
+                setupGraph(3);
+            }
+        });
 
     }
 
-    private void setupBarGraph() {
+    private void setupGraph(int type) {
 
         GraphView graph = (GraphView) findViewById(R.id.graph);
         final List<Rate> graphList = MainActivity.getList();
@@ -40,8 +70,24 @@ public class GraphActivity extends ActionBarActivity {
             d[i] = new DataPoint(i,graphList.get(i).getExchangeRate());
 
         }
-        BarGraphSeries<DataPoint> bg = new BarGraphSeries<>(d);
-        graph.addSeries(bg);
+
+        if(type == 1) {
+            graph.removeAllSeries();
+            BarGraphSeries<DataPoint> bg = new BarGraphSeries<>(d);
+            graph.addSeries(bg);
+        }
+        if(type == 2) {
+            graph.removeAllSeries();
+            LineGraphSeries<DataPoint> bg = new LineGraphSeries<>(d);
+            graph.addSeries(bg);
+        }
+        if(type == 3) {
+            graph.removeAllSeries();
+            PointsGraphSeries<DataPoint> bg = new PointsGraphSeries<>(d);
+            graph.addSeries(bg);
+        }
+
+
 
         graph.getViewport().setXAxisBoundsManual(true);
         graph.getViewport().setYAxisBoundsManual(true);

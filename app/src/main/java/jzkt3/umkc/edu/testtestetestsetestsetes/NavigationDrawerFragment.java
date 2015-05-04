@@ -64,7 +64,7 @@ public class NavigationDrawerFragment extends Fragment implements DrawerAdapter.
     public static List<Information> getData(){
         List<Information> data = new ArrayList<>();
         int[] icons ={R.drawable.globe_1,R.drawable.bar_graph,R.drawable.money_exchange,R.drawable.check_book};
-        String[] titles ={"Exchange Rates","Graph","Convert","Conversion History"};
+        String[] titles ={"Exchange Rates","Graphs","Convert","Conversion History"};
 
         for (int i=0;i<titles.length && i<icons.length;i++){
             Information current = new Information();

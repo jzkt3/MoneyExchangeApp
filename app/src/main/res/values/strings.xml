@@ -18,7 +18,7 @@
     <string name="convert_button_text">Convert</string>
     <string name="reset_button_text">Reset</string>
     <string name="currency_prompt">Choose a currency</string>
-    <string name="title_activity_graph">Graph</string>
+    <string name="title_activity_graph">Graphs</string>
     <string name="enter_dollars">Enter USD</string>
     <string name="press_convert">Press Convert button</string>
     <string name="the_dollars">U.S Dollars</string>
@@ -29,6 +29,10 @@
     <string name="the_license">License</string>
     <string name="loading_placeholder">LOADING…</string>
     <string name="result_result">Result: </string>
+    <string name="button_one">Bar Graph</string>
+    <string name="button_two">Line Graph</string>
+    <string name="button_three">Point Graph</string>
+    <string name="graph_select_text">Select graph type</string>
 
 
     <string-array name="tabs">

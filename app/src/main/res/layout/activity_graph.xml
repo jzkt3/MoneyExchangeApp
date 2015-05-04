@@ -21,9 +21,8 @@
         android:layout_height="wrap_content"
         android:text="@string/zoomable_scrollable"
         android:id="@+id/textView2"
-        android:layout_below="@+id/graph"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="24dp"/>
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -32,6 +31,47 @@
         android:textColor="@color/primaryText"
         android:id="@+id/textView3"
         android:layout_above="@+id/graph"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:text="@string/button_one"
+        android:id="@+id/button1"
+        android:background="@color/primaryColor"
+        android:textColor="@color/textIconsColor"
+        android:layout_above="@+id/textView2"
+        android:layout_toStartOf="@+id/textView3" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:text="@string/button_two"
+        android:id="@+id/button2"
+        android:background="@color/primaryColor"
+        android:textColor="@color/textIconsColor"
+        android:layout_alignTop="@+id/button1"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:text="@string/button_three"
+        android:id="@+id/button3"
+        android:background="@color/primaryColor"
+        android:textColor="@color/textIconsColor"
+        android:layout_alignTop="@+id/button2"
+        android:layout_toEndOf="@+id/textView3" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/graph_select_text"
+        android:id="@+id/selectText"
+        android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
