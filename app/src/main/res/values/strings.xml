@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">App Name</string>
+    <string name="app_name">Money Exchange</string>
     <string name="title_activity_main">Global Exchange Rates</string>
     <string name="hello_world">Hello World!</string>
     <string name="hello_info">Disclaimer</string>
