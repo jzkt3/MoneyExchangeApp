@@ -1,5 +1,8 @@
 package jzkt3.umkc.edu.testtestetestsetestsetes;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -9,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
@@ -107,7 +111,7 @@ public class HistoryActivity extends ActionBarActivity implements View.OnClickLi
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_sub, menu);
+        getMenuInflater().inflate(R.menu.menu_history, menu);
         return true;
     }
 
@@ -121,6 +125,22 @@ public class HistoryActivity extends ActionBarActivity implements View.OnClickLi
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        }
+        if (id == R.id.deleteAll){
+
+            new AlertDialog.Builder(this)
+                    .setTitle("Delete All")
+                    .setMessage("Are you sure?")
+                    .setIcon(R.drawable.caution_icon)
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            DBAdapter helper;
+                            helper = new DBAdapter(getApplicationContext());
+                            helper.deleteAll();
+                            data.clear();
+                            adapter.notifyDataSetChanged();
+                        }})
+                    .setNegativeButton(android.R.string.no, null).show();
         }
 
         if(id == android.R.id.home){

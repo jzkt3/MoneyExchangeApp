@@ -102,9 +102,12 @@ public class DBAdapter {
             Exception x = new Exception("DNE");
             throw x;
         }
-
         db.delete("HTABLE", "result=" + d, null);
+    }
 
+    public void deleteAll(){
+        SQLiteDatabase db = helper.getReadableDatabase();
+        db.delete(DBHelper.TABLE_NAME,null,null);
     }
 
 
